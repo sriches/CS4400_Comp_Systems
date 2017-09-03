@@ -570,6 +570,287 @@ void bMode(int argNum, char *argv[], int conversion)
 	printf("beginning of b mode\n");
 
 
+	/* Go through each word in argv */
+	int i;
+	for (i = 1; i < argNum; i++)
+	{
+		/* Check if the word is a flag */
+		int isAFlag =
+			(i == 1 && strcmp(argv[1], "-b") == 0) ||
+			(i == 1 && strcmp(argv[1], "-t") == 0) ||
+			(i == 2 && strcmp(argv[2], "-b") == 0) ||
+			(i == 2 && strcmp(argv[2], "-t") == 0);
+
+		/* If the word is not a flag, check to see if it matches the desired pattern:
+		 * 
+		 * 1. between 1 and 2 repetitions (inclusive) of the letter “m”;
+		 * 2. exactly one “:”;
+		 * 3. an odd number of uppercase letters — call this sequence X;
+		 * 4. 2 or more repetitions of the letter “r”;
+		 * 5. exactly one “,”;
+		 * 6. between 1 and 3 (inclusive) decimal digits; and
+		 * 7. the same characters as X repeated 2 times.
+		 */
+		if(!isAFlag)
+		{
+			/* Store the word */
+			char *word = argv[i];
+
+			/* Get the length of the word */
+			int wordLength = strlen(word);
+
+			printf("Not a flag\n");
+			printf("Word: %s  Length: %d\n", argv[i], wordLength);
+
+			/* Variable that will tell if the word is not a match */
+			int notAMatch = 0;
+
+			/* Variable to tell which requirement the character should match */
+			int requirement = 1;
+
+			int mRepetitions = 0;			/* Keep track of 'm' repetitions for requriement 1 */
+			int upperRepetitions = 0;		/* Keep track of <upper case> repetitions for requriement 3 */
+			char *upperSequence;			/* Keep track of the upper case sequence to use for requriement 7 */
+			int rRepetitions = 0;			/* Keep track of 'r' repetitions for requriement 4 */
+			int decimalRepetitions = 0;		/* Keep track of <decimal> repetitions for requriement 6 */
+
+			/* Keep a character index counter */
+			int charIndex;
+
+			/* Look at each character in a row */
+			for(charIndex = 0; charIndex < wordLength; charIndex++)
+			{
+
+				printf("Checking %c...  Req %d\n", word[charIndex], requirement);
+
+				if(notAMatch)
+				{
+					break;
+				}
+				else
+				{
+					/* Check if the character matches */
+					switch(requirement)
+					{
+						case 1:
+							if(word[charIndex] == 'm')
+							{
+								mRepetitions++;
+								break;
+							}
+							else
+							{
+								/* Make sure m was previously repeated 1 or 2 times */
+								if(mRepetitions == 1 || mRepetitions == 2)
+								{
+									requirement++;
+									goto req2;
+								}
+								else
+								{
+									notAMatch = 1;
+									if(!conversion)
+									{
+										printf("no\n");
+									}
+								}
+							}
+
+							break;
+
+						case 2:
+						req2:
+							if(word[charIndex] == ':')
+							{
+								requirement++;
+								break;
+							}
+							else
+							{
+								notAMatch = 1;
+								if(!conversion)
+								{
+									printf("no\n");
+								}
+							}
+							break;
+
+						case 3:
+							/* Check if the character is an uppercase letter */
+							if(word[charIndex] >= 'A' && word[charIndex] <= 'Z')
+							{
+								upperRepetitions++;
+								break;
+							}
+							else
+							{
+								/* Check if there's an odd number of upperRepetitions */
+								if(upperRepetitions & 1) /* if odd */
+								{
+									/* Get the sequence of uppercase letters to use for later */
+									int upperIndex = charIndex - upperRepetitions;
+									char upperSeqWord[upperRepetitions + 1];
+									int seqIndex;
+									for (seqIndex = 0; seqIndex < upperRepetitions; seqIndex++, upperIndex++)
+									{
+										upperSeqWord[seqIndex] = word[upperIndex];
+									}
+									/* Add 0 terminating char for string */
+									upperSeqWord[seqIndex] = 0;
+									/* Assign to upperSequence, which can be accessed for later use */
+									upperSequence = upperSeqWord;
+
+									/* Go to next requirement */
+									requirement++;
+									goto req4;
+								}
+								else
+								{
+									notAMatch = 1;
+									if(!conversion)
+									{
+										printf("no\n");
+									}
+								}
+							}
+
+							break;
+
+						case 4:
+						req4:
+							if(word[charIndex] == 'r')
+							{
+								rRepetitions++;
+								break;
+							}
+							else
+							{
+								if(rRepetitions > 1)
+								{
+									requirement++;
+									goto req5;
+								}
+								else
+								{
+									notAMatch = 1;
+									if(!conversion)
+									{
+										printf("no\n");
+									}
+								}
+							}
+
+							break;
+
+						case 5:
+						req5:
+							if(word[charIndex] == ',')
+							{
+								requirement++;
+								break;
+							}
+							else
+							{
+								notAMatch = 1;
+								if(!conversion)
+								{
+									printf("no\n");
+								}
+							}
+							
+							break;
+						
+						case 6:
+						req6:
+							if(word[charIndex] >= '0' && word[charIndex] <= '9')
+							{
+								decimalRepetitions++;
+								break;
+							}
+							else
+							{
+								/* Make sure there were between 1 and 3 (inclusive) decimal digits */
+								if(decimalRepetitions > 0 && decimalRepetitions < 4)
+								{
+									requirement++;
+									goto req7;
+								}
+								else
+								{
+									notAMatch = 1;
+									if(!conversion)
+									{
+										printf("no\n");
+									}
+								}
+							}
+
+							break;
+
+						case 7:
+						req7:
+							/* Check that the current till remaining characters equal the upperSequence repeated 2 times */
+							/* Check if the remaining is the expected length */
+							if(strlen(upperSequence) * 2 == strlen(word) - charIndex)
+							{
+								/* compare character by character */
+								int upIndex;
+								for(upIndex = 0; upIndex < strlen(upperSequence); upIndex++, charIndex++)
+								{
+									if(upperSequence[upIndex] != word[charIndex])
+									{
+										notAMatch = 1;
+										if(!conversion)
+										{
+											printf("no\n");
+											break;
+										}
+									}
+								}
+
+								/* Same comparisons again to ensure sequence is repeated twice */
+								for(upIndex = 0; upIndex < strlen(upperSequence); upIndex++, charIndex++)
+								{
+									if(upperSequence[upIndex] != word[charIndex])
+									{
+										notAMatch = 1;
+										if(!conversion)
+										{
+											printf("no\n");
+											break;
+										}
+									}
+								}
+
+								/* Checked rest of characters, we confirmed a match */
+								if(conversion)
+								{
+									/* TODO GET CONVERSION AND PRINT IT */
+									printf("B-CONVERSION");
+
+								}
+								else
+								{
+									printf("yes\n");
+								}
+
+							}
+							else
+							{
+								notAMatch = 1;
+								if(!conversion)
+								{
+									printf("no\n");
+								}
+							}
+
+							break;
+					}
+				}
+			}
+		}
+	}
+
 
 }
 
