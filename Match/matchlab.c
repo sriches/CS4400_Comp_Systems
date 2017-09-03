@@ -826,7 +826,65 @@ void bMode(int argNum, char *argv[], int conversion)
 								if(conversion)
 								{
 									/* TODO GET CONVERSION AND PRINT IT */
-									printf("B-CONVERSION");
+									printf("\nB-CONVERSION\n");
+
+									int hCount = 0;
+
+									/* Count the number of 'H's in the word */
+									int countIndex;
+									for(countIndex = 0; countIndex < wordLength; countIndex++)
+									{
+										if(word[countIndex] == 'H')
+										{
+											hCount++;
+										}
+									}
+
+									if(hCount == 0)
+									{
+										printf(word);
+										printf("\n");
+									}
+									else
+									{
+										int convertedWordLength = wordLength + hCount + 1;
+										char convertedWord[convertedWordLength];
+
+										/* Create emtpy string 
+										int cIndex;
+										for (cIndex = 0; cIndex < convertedWordLength; cIndex++)
+										{
+											convertedWord[cIndex] = 0;
+										}*/
+
+										int convIndex = 0;
+										for(countIndex = 0; countIndex < wordLength; countIndex++, convIndex++)
+										{
+											convertedWord[convIndex] = word[countIndex];
+
+											/* Add an extra G after every H */
+											if(word[countIndex] == 'H')
+											{
+												convIndex++;
+												convertedWord[convIndex] = 'G';
+											}
+										}
+
+										/* Add 0 string terminator */
+										convertedWord[convIndex] = 0;
+
+										/* Print converted word to the console */
+										printf(convertedWord);
+										printf("\n");
+									}
+
+
+
+
+
+
+
+
 
 								}
 								else
