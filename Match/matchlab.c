@@ -244,6 +244,7 @@ void aMode(int, char**, int);
 void bMode(int, char**, int);
 void cMode(int, char**, int);
 void checkWhichCaseToRunWithMultipleArgs(int, char**);
+char* aConversion(char*);
 
 int main(int argc, char *argv[])
 {
@@ -459,7 +460,10 @@ void aMode(int argNum, char *argv[], int conversion)
 							else
 							{
 								notAMatch = 1;
-								printf("no\n");
+								if(!conversion)
+								{
+									printf("no\n");
+								}
 							}
 							break;
 
@@ -479,7 +483,10 @@ void aMode(int argNum, char *argv[], int conversion)
 								else
 								{
 									notAMatch = 1;
-									printf("no\n");
+									if(!conversion)
+									{
+										printf("no\n");
+									}
 								}
 							}
 							break;
@@ -493,7 +500,10 @@ void aMode(int argNum, char *argv[], int conversion)
 							else
 							{
 								notAMatch = 1;
-								printf("no\n");
+								if(!conversion)
+								{
+									printf("no\n");
+								}
 							}
 							break;
 
@@ -507,8 +517,29 @@ void aMode(int argNum, char *argv[], int conversion)
 									/* The whole word is a match */
 									if(conversion)
 									{
+										/* Convert the word. 
+										 * The conversion should replace each character by the last one.*/
+										char lastChar = word[wordLength - 1];
+
+										/* Create empty string */
+										char convertedWord[wordLength + 1];
+										int cIndex;
+										for (cIndex = 0; cIndex < wordLength; cIndex++)
+										{
+											convertedWord[cIndex] = 0;
+										}
+
+										int i;
+										for (i=0; i < wordLength; i++)
+										{
+											convertedWord[i] = lastChar;
+										}
+										/*terminate string */
+										convertedWord[i] = 0;
+
 										/* Print the conversion to the console */
-										/* TODO */
+										printf(convertedWord);
+										printf("\n");
 									}
 									else
 									{
@@ -519,7 +550,10 @@ void aMode(int argNum, char *argv[], int conversion)
 							else
 							{
 								notAMatch = 1;
-								printf("no\n");
+								if(!conversion)
+								{
+									printf("no\n");
+								}
 							}
 
 							break;
@@ -529,6 +563,7 @@ void aMode(int argNum, char *argv[], int conversion)
 		}
 	}
 }
+
 
 void bMode(int argNum, char *argv[], int conversion)
 {
