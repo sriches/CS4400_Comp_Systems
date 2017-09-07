@@ -248,11 +248,6 @@ char* aConversion(char*);
 
 int main(int argc, char *argv[])
 {
-	printf("Hello\n");
-
-	/* Get the number of arguments */
-	printf("Arguments: %d\n", argc);
-
 	
 	switch(argc)
 	{
@@ -265,15 +260,10 @@ int main(int argc, char *argv[])
 		case 3:
 			if (strcmp(argv[1], "-b") == 0)
 			{
-				printf(argv[1]);
-				printf("\ngo to b mode\n");
 				bMode(argc, argv, 0);
 			}
 			else if (strcmp(argv[1], "-c") == 0)
 			{
-				printf(argv[1]);
-				printf("\ngo to c mode\n");
-
 				cMode(argc, argv, 0);
 			}
 			else if (strcmp(argv[1], "-t") == 0)
@@ -281,16 +271,10 @@ int main(int argc, char *argv[])
 				/* 2 vars with the 1st as -t should go to aMode with conversion
 				 * If the two arguments are "-t -b", then no match is made, so
 				 * sending to aMode will process equally */
-				printf(argv[1]);
-				printf("\ngo to a mode with conversion\n");
-
 				aMode(argc, argv, 1);
 			}
 			else
 			{
-				printf(argv[1]);
-				printf("\ngo to a mode\n");
-
 				aMode(argc, argv, 0);
 			}
 			break;
@@ -305,12 +289,9 @@ int main(int argc, char *argv[])
 
 void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 {
-	printf("3+ args. Need to check args before sending to mode\n");
-
 	/* If no flags, send to a mode */
 	if (argv[1][0] != '-')
 	{
-		printf("no flags, default a mode\n");
 		aMode(argc, argv, 0);
 	}
 	/* If first arg is '-a' */
@@ -319,12 +300,10 @@ void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 		/* If second arg is a '-t', then go to a mode with conversion */
 		if (strcmp(argv[2], "-t") == 0)
 		{
-			printf("a mode with conversion");
 			aMode(argc, argv, 1);
 		}
 		else
 		{
-			printf("a mode without conversion");
 			aMode(argc, argv, 0);
 		}
 	}
@@ -334,12 +313,10 @@ void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 		/* If second arg is a '-t', then go to b mode with conversion */
 		if (strcmp(argv[2], "-t") == 0)
 		{
-			printf("b mode with conversion");
 			bMode(argc, argv, 1);
 		}
 		else
 		{
-			printf("b mode without conversion");
 			bMode(argc, argv, 0);
 		}
 	}
@@ -349,12 +326,10 @@ void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 		/* If second arg is a '-t', then go to c mode with conversion */
 		if (strcmp(argv[2], "-t") == 0)
 		{
-			printf("c mode with conversion");
 			cMode(argc, argv, 1);
 		}
 		else
 		{
-			printf("c mode without conversion");
 			cMode(argc, argv, 0);
 		}
 	}
@@ -364,19 +339,16 @@ void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 		/* If second arg is a '-b', then go to b mode with conversion */
 		if (strcmp(argv[2], "-b") == 0)
 		{
-			printf("b mode with conversion");
 			bMode(argc, argv, 1);
 		}
 		/* If second arg is a '-c', then go to c mode with conversion */
 		else if (strcmp(argv[2], "-c") == 0)
 		{
-			printf("c mode with conversion");
 			cMode(argc, argv, 1);
 		}
 		/* Anything else, default to a mode with conversion */
 		else
 		{
-			printf("a mode with conversion");
 			aMode(argc, argv, 1);
 		}
 	}
@@ -384,8 +356,6 @@ void checkWhichCaseToRunWithMultipleArgs(int argc, char *argv[])
 
 void aMode(int argNum, char *argv[], int conversion)
 {
-	printf("beginning of a mode\n");
-
 	/* Go through each word in argv */
 	int i;
 	for (i = 1; i < argNum; i++)
@@ -413,9 +383,6 @@ void aMode(int argNum, char *argv[], int conversion)
 			/* Get the length of the word */
 			int wordLength = strlen(word);
 
-			printf("Not a flag\n");
-			printf("Word: %s  Length: %d\n", argv[i], wordLength);
-
 			/* Variable that will tell if the word is not a match */
 			int notAMatch = 0;
 
@@ -431,9 +398,6 @@ void aMode(int argNum, char *argv[], int conversion)
 			/* Look at each character in a row */
 			for(charIndex = 0; charIndex < wordLength; charIndex++)
 			{
-
-				printf("Checking %c...  Req %d\n", word[charIndex], requirement);
-
 				if(notAMatch)
 				{
 					break;
@@ -537,7 +501,7 @@ void aMode(int argNum, char *argv[], int conversion)
 										/*terminate string */
 										convertedWord[i] = 0;
 
-										/* Print the conversion to the console */
+										/* Print converted word to the console */
 										printf(convertedWord);
 										printf("\n");
 									}
@@ -567,9 +531,6 @@ void aMode(int argNum, char *argv[], int conversion)
 
 void bMode(int argNum, char *argv[], int conversion)
 {
-	printf("beginning of b mode\n");
-
-
 	/* Go through each word in argv */
 	int i;
 	for (i = 1; i < argNum; i++)
@@ -599,9 +560,6 @@ void bMode(int argNum, char *argv[], int conversion)
 			/* Get the length of the word */
 			int wordLength = strlen(word);
 
-			printf("Not a flag\n");
-			printf("Word: %s  Length: %d\n", argv[i], wordLength);
-
 			/* Variable that will tell if the word is not a match */
 			int notAMatch = 0;
 
@@ -620,9 +578,6 @@ void bMode(int argNum, char *argv[], int conversion)
 			/* Look at each character in a row */
 			for(charIndex = 0; charIndex < wordLength; charIndex++)
 			{
-
-				printf("Checking %c...  Req %d\n", word[charIndex], requirement);
-
 				if(notAMatch)
 				{
 					break;
@@ -825,9 +780,6 @@ void bMode(int argNum, char *argv[], int conversion)
 								/* Checked rest of characters, we confirmed a match */
 								if(conversion)
 								{
-									/* TODO GET CONVERSION AND PRINT IT */
-									printf("\nB-CONVERSION\n");
-
 									int hCount = 0;
 
 									/* Count the number of 'H's in the word */
@@ -905,8 +857,6 @@ void bMode(int argNum, char *argv[], int conversion)
 
 void cMode(int argNum, char *argv[], int conversion)
 {
-	printf("beginning of c mode\n");
-
 	/* Go through each word in argv */
 	int i;
 	for (i = 1; i < argNum; i++)
@@ -936,9 +886,6 @@ void cMode(int argNum, char *argv[], int conversion)
 			/* Get the length of the word */
 			int wordLength = strlen(word);
 
-			printf("Not a flag\n");
-			printf("Word: %s  Length: %d\n", argv[i], wordLength);
-
 			/* Variable that will tell if the word is not a match */
 			int notAMatch = 0;
 
@@ -957,9 +904,6 @@ void cMode(int argNum, char *argv[], int conversion)
 			/* Look at each character in a row */
 			for(charIndex = 0; charIndex < wordLength; charIndex++)
 			{
-
-				printf("Checking %c...  Req %d\n", word[charIndex], requirement);
-
 				if(notAMatch)
 				{
 					break;
@@ -1164,9 +1108,6 @@ void cMode(int argNum, char *argv[], int conversion)
 								/* Checked rest of characters, we confirmed a match */
 								if(conversion)
 								{
-									/* TODO GET CONVERSION AND PRINT IT */
-									printf("\nC-CONVERSION\n");
-
 									int eCount = 0;
 
 									/* Count the number of 'E's in the word */
