@@ -1,0 +1,98 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww12260\viewh8380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 CS4400 Spring 2017 Lab3 Worksheet:\
+
+
+
+1. What is the gdb command you used to determine the location of the return address?\
+
+print $rsp
+
+
+2. What is the location of the return address?\
+
+0x0040075d
+
+
+
+3. What instruction does the return address point to? (HINT: dereference the return address using x/x)\
+
+main + 14
+
+
+4. What is the address of the vals_to_sum array, or in other words, the address of the first item in the array?\
+
+0x7fffffffdde0
+
+
+5. How far away is this from the location of the return address?\
+
+
+0x7fffffffdde0 - 7fffffffde18 = 0x38
+
+
+
+6. Considering your answer to question 5, how many long ints will fit in that many bytes?\
+
+
+0x38 / 0x8 = 7
+
+7. Copy the full input to the program that casues execution to jump to the 'nevercalled' function.
+
+
+
+
+
+
+
+
+
+
+7fffffffde28  < rsp at start of main
+
+
+
+7fffffffde18  < rsp at start of sum_vals
+
+Points to 40075d
+
+
+
+0x7fffffffdde0  < array index 0
+
+0x7fffffffdde8  < array index 1
+
+
+
+
+
+
+400737 < address of 'nevercalled'
+in dec = 4196151
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

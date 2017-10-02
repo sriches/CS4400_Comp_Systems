@@ -191,6 +191,8 @@ Disassembly of section .text:
   40073c:	48 83 c4 08          	add    $0x8,%rsp
   400740:	c3                   	retq   
 
+part one password is "hello_world"
+
 0000000000400741 <part_two>:
   400741:	48 83 ec 08          	sub    $0x8,%rsp
   400745:	b8 00 00 00 00       	mov    $0x0,%eax
@@ -206,6 +208,8 @@ Disassembly of section .text:
 
 
 1 3 5 7 9 11 13 15 17 19
+
+part 2 password is "5"
 
 000000000040076a <part_three>:
   40076a:	48 83 ec 08          	sub    $0x8,%rsp
@@ -226,6 +230,9 @@ Disassembly of section .text:
   40079f:	e8 52 ff ff ff       	callq  4006f6 <fail>
   4007a4:	48 83 c4 08          	add    $0x8,%rsp
   4007a8:	c3                   	retq   
+
+
+part 3 password is "6"
 
 00000000004007a9 <main>:
   4007a9:	48 83 ec 08          	sub    $0x8,%rsp
