@@ -5,7 +5,7 @@
 #include <math.h>
 
 // Size of the input/output arrays
-#define DIM 10
+#define DIM 10000
 // Number of tests to run
 #define ITERS 100000
 // Error tolerance for the check function
@@ -67,7 +67,7 @@ void check(float* dst, float* src, int len)
 // and store them in dst
 void window_average(float* dst, float* src, int len)
 {
-  int i, j;
+  int i, j, w;
   float tempSum;
 
   for(i = 1; i < len-1; i ++)
@@ -78,30 +78,61 @@ void window_average(float* dst, float* src, int len)
     // Sum the 3-number window centered at i
     for(j = i - 1; j <= i + 1; j++)
     {
-      tempSum += src[j];
-    }
+      w = j;
+      // Check for wraparound
+      /*if(w == -1)
+	w = len - 1;
+      if(w == len)
+	w = 0;*/
 
+      tempSum += src[w];
+    }    
     // Divide for average
     dst[i] = tempSum / 3;
   }
 
-  // Do the case for when i = 0
-  tempSum = 0.0;
-  for(j = - 1; j <= 1; j++)
-  {
-      tempSum += src[j];
-  }
-  // Divide for average
-  dst[0] = tempSum / 3;
+	// Case for when i = 0
+	i = 0;
+	// Initialize the sum
+    tempSum = 0.0;
+  
+    // Sum the 3-number window centered at i
+    for(j = i - 1; j <= i + 1; j++)
+    {
+      w = j;
+      // Check for wraparound
+      if(w == -1)
+	w = len - 1;
+      if(w == len)
+	w = 0;
 
-  // Do the case for when i = len-1
-  tempSum = 0.0;
-  for(j = len - 2; j <= len; j++)
-  {
-      tempSum += src[j];  
-  }
-  // Divide for average
-  dst[len - 1] = tempSum / 3;
+      tempSum += src[w];
+    }    
+    // Divide for average
+    dst[i] = tempSum / 3;
+
+
+	// Case for when i = len-1
+	i = len-1;
+	// Initialize the sum
+    tempSum = 0.0;
+  
+    // Sum the 3-number window centered at i
+    for(j = i - 1; j <= i + 1; j++)
+    {
+      w = j;
+      // Check for wraparound
+      if(w == -1)
+	w = len - 1;
+      if(w == len)
+	w = 0;
+
+      tempSum += src[w];
+    }    
+    // Divide for average
+    dst[i] = tempSum / 3;
+
+ 
 }
 
 int main(int argc, char** argv)
@@ -131,7 +162,7 @@ int main(int argc, char** argv)
 
   // Turn this on for debugging
   // Also make sure to reduce DIM to a reasonable number (like 10)
-#if 1
+#if 0
   printf("src:\n");
   for(i = 0; i < DIM; i++)
     printf("%f ", src[i]);

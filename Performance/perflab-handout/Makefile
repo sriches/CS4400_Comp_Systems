@@ -14,4 +14,4 @@ kernels.o: $(KERNELS)
 	$(CC) $(CFLAGS) -I. -o kernels.o -c $(KERNELS)
 
 clean: 
-	-rm -f $(OBJS) driver core *~ *.o
+	-rm -f $(OBJS) driver core *~ *.o pinwheel_result_96.image pinwheel_result_96.png
